@@ -1,3 +1,8 @@
 spring:
   application:
     name: fastsns
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/fast_sns?rewriteBatchedStatements=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: root
+    password: localpw
