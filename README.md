@@ -42,7 +42,7 @@ public class Account {
    
 이렇게 하면 객체의 상태가 외부에서 임의로 변경되지 않고, 비즈니스 로직에 맞는 방식으로 상태를 제어할 수 있습니다.
 
-### Object Mother 패턴
+### 2. Object Mother 패턴
 [Object Mother Blog LINK](https://martinfowler.com/bliki/ObjectMother.html)
 
 : 객체 생성의 복잡성을 줄이고, 테스트 코드에서의 객체 생성을 간소화하기 위한 디자인 패턴 <br/>
@@ -68,7 +68,7 @@ public class CustomerObjectMother {
 ```
 이 예시에서 CustomerObjectMother 클래스는 다양한 이름과 이메일을 가진 Customer 객체를 생성하는 방법을 제공합니다. 이를 통해 테스트에서는 간단하게 필요한 데이터를 제공받을 수 있습니다.
 
-### Easy Random 라이브러리 
+### 3. Easy Random 라이브러리 
 [easy-random Git LINK](https://github.com/j-easy/easy-random)
 
 : Java용 라이브러리로, 무작위 객체 생성을 쉽게 할 수 있도록 도와줍니다.  <br/>
@@ -98,6 +98,10 @@ public class Example() {
 }
 ```
 
+### 4. 정규화 
+
+1. 히스토리성 데이터는 정규화의 대상이 아니다.
+2. 정규화의 대상을 고려할 때는 **최신성**을 보장해야 하는 데이터인지를 고민
 
 ---
 
