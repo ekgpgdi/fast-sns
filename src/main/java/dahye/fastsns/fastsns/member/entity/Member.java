@@ -41,7 +41,17 @@ public class Member {
         this.createdAt = createdAt == null ? LocalDateTime.now() : createdAt;
     }
 
-    void validateNickname(String nickname) {
+    /*
+    객체의 상태 변경은 객체 내부에서 처리하도록 선호 -> 외부에서의 변경을 최소화하여 사이드 이펙트를 추적하기 쉬워짐
+    객체의 상태를 변경하는 로직은 해당 객체 내의 메서드로 제공하여, 외부에서 직접 변경할 수 없도록 관리하는 것이 바람직함.
+    */
+    public void changeNickname(String to) {
+        Objects.requireNonNull(to);
+        validateNickname(to);
+        nickname = to;
+    }
+
+    private void validateNickname(String nickname) {
         Assert.isTrue(nickname.length() <= NAME_MAX_LENGTH, "최대 길이를 초과했습니다.");
     }
 }
