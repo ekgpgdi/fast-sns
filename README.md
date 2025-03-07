@@ -7,6 +7,44 @@
 
 ---
 
+## 개발 주의 사항
+### 1. Setter
+1. **Setter는 필요한 경우에만 사용하라** <br/>
+   프로젝트가 커지면 클래스가 점점 복잡해지는데, Setter 메서드가 있으면 클래스 외부에서 객체의 상태를 쉽게 변경할 수 있습니다. <br/>
+   이는 의도하지 않은 사이드 이펙트를 발생시킬 수 있습니다.  <br/>
+   그래서 Setter 메서드는 꼭 필요한 경우에만 제공하는 것이 좋습니다. <br/> <br/>
+2. **Setter보다는 동작 단위로 제공하는 것이 더 낫다**<br/>
+   객체의 상태를 변경해야 하는 경우, Setter를 노출하는 것보다는 그 상태를 변경하는 동작을 메서드로 제공하는 것이 좋다는 의미입니다.<br/>
+   예를 들어, setBalance()와 같은 Setter 대신, deposit() 또는 withdraw() 같은 메서드를 제공하여 객체가 자기 상태를 스스로 관리하게 하는 것이 더 안전하고, 변경할 때 더 명확하게 의도가 드러납니다. <br/> <br/>
+
+🔥 **Setter 대신 메서드로 상태 변경** : 상태를 변경하는 동작을 메서드로 제공하여, 객체가 내부적으로 상태를 관리하도록 합니다. 예를 들어:
+```java
+public class Account {
+    private double balance;
+
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+        }
+    }
+
+    public void withdraw(double amount) {
+        if (amount > 0 && balance >= amount) {
+            balance -= amount;
+        }
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+}
+```
+   
+이렇게 하면 객체의 상태가 외부에서 임의로 변경되지 않고, 비즈니스 로직에 맞는 방식으로 상태를 제어할 수 있습니다.
+
+
+---
+
 ## 1. 대용량 시스템에 대한 이해 
 
 ## 1. 웹의 기본 아키텍처
