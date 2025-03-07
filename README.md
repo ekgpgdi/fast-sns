@@ -7,7 +7,7 @@
 
 ---
 
-## 개발 주의 사항
+## 개발 고려 사항
 ### 1. Setter
 1. **Setter는 필요한 경우에만 사용하라** <br/>
    프로젝트가 커지면 클래스가 점점 복잡해지는데, Setter 메서드가 있으면 클래스 외부에서 객체의 상태를 쉽게 변경할 수 있습니다. <br/>
@@ -41,6 +41,62 @@ public class Account {
 ```
    
 이렇게 하면 객체의 상태가 외부에서 임의로 변경되지 않고, 비즈니스 로직에 맞는 방식으로 상태를 제어할 수 있습니다.
+
+### Object Mother 패턴
+[Object Mother Blog LINK](https://martinfowler.com/bliki/ObjectMother.html)
+
+: 객체 생성의 복잡성을 줄이고, 테스트 코드에서의 객체 생성을 간소화하기 위한 디자인 패턴 <br/>
+> 테스트에서 자주 사용되는 객체를 미리 정의해 놓고 필요할 때마다 재사용할 수 있습니다. 이렇게 하면 객체 생성을 위한 코드가 간결해지고, 테스트의 가독성이 좋아집니다.
+
+<br/>
+
+**Example**
+```java
+public class CustomerObjectMother {
+    public static Customer aCustomerWithDefaultName() {
+        return new Customer("John Doe", "john.doe@example.com");
+    }
+
+    public static Customer aCustomerWithCustomName(String name) {
+        return new Customer(name, "default@example.com");
+    }
+
+    public static Customer aCustomerWithCustomEmail(String email) {
+        return new Customer("Default Name", email);
+    }
+}
+```
+이 예시에서 CustomerObjectMother 클래스는 다양한 이름과 이메일을 가진 Customer 객체를 생성하는 방법을 제공합니다. 이를 통해 테스트에서는 간단하게 필요한 데이터를 제공받을 수 있습니다.
+
+### Easy Random 라이브러리 
+[easy-random Git LINK](https://github.com/j-easy/easy-random)
+
+: Java용 라이브러리로, 무작위 객체 생성을 쉽게 할 수 있도록 도와줍니다.  <br/>
+주로 단위 테스트에서 다양한 객체를 자동으로 생성할 때 유용하게 사용됩니다. <br/>
+
+<br/>
+
+**Example**
+```java
+public class Example() {
+    public void easyRandom() {
+        // 기본 설정으로 객체 생성
+        EasyRandom easyRandom = new EasyRandom();
+        MyClass myObject = easyRandom.nextObject(MyClass.class);
+
+        // 세부 설정을 통한 객체 생성
+        EasyRandomParameters parameters = new EasyRandomParameters()
+                .randomize(Long.class, new Randomizer<Long>() {
+                    public Long getRandomValue() {
+                        return 100L; // 모든 Long 타입 값에 대해 100을 반환
+                    }
+                });
+
+        EasyRandom easyRandom = new EasyRandom(parameters);
+        MyClass myObject = easyRandom.nextObject(MyClass.class);
+    }
+}
+```
 
 
 ---
