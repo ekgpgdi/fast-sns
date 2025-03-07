@@ -41,7 +41,7 @@ public class MemberRepository {
 
     public Member save(Member member) {
         /*
-        member id 를 보고 갱신 또는 삽입ㅇ르 정함
+        member id 를 보고 갱신 또는 삽입을 정함
         반환값은 id 를 담아서 반환한다.
          */
         if (member.getId() == null) {
