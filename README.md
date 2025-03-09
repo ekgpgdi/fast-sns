@@ -253,6 +253,42 @@ public class Example() {
 1. **PK 활용 검색이 빠름**, 특히 **범위 검색**에서 성능 우위 → **공간적 캐시 이점**.
 2. **세컨더리 인덱스는 PK 포함** → **커버링 인덱스** 활용 가능.
 
+### 실습
+```sql
+# 데이터 분포도에 따라 같은 인덱스여도 성능이 다를 수 있다.
+# 데이터 식별성에 따라 성능이 크게 달라짐
+
+# 약 270만개 데이터 조회 40s 432ms > 인덱스를 주지 않았을 때보다 느려짐
+# 범위의 조건을 좁힐 수 없음 (현재 1번 유저의 데이터만 있기에)
+# 인덱스 테이블도 보고, 물리 테이블도 봐야 하기에 역효과 발생
+create index POST__index_member_id
+    on POST (memberId);
+
+SELECT createdDate, memberId, count(id) as count
+                    FROM POST use index (POST__index_member_id)
+                    WHERE memberId = 1 AND createdDate BETWEEN '1900-01-01' AND '2025-03-01'
+                    GROUP BY memberId, createdDate;
+
+# 약 270만개 데이터 조회 2s 489ms
+# 식별값이 많기에, 대신 데이터가 없는 memberId 인 경우 엄청 느려짐
+create index POST__index_created_date
+    on POST (createdDate);
+
+SELECT createdDate, memberId, count(id) as count
+                    FROM POST use index (POST__index_created_date)
+                    WHERE memberId = 1 AND createdDate BETWEEN '1900-01-01' AND '2025-03-01'
+                    GROUP BY memberId, createdDate;
+
+# 약 270만개 데이터 조회 129ms
+# 복합 인덱스로 추가
+create index POST__index_member_id_created_date
+    on POST (memberId, createdDate);
+
+SELECT createdDate, memberId, count(id) as count
+                    FROM POST use index (POST__index_member_id_created_date)
+                    WHERE memberId = 1 AND createdDate BETWEEN '1900-01-01' AND '2025-03-01'
+                    GROUP BY memberId, createdDate;
+```
 
 <br/>
 <br/>
