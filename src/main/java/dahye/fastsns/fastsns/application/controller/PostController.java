@@ -3,13 +3,13 @@ package dahye.fastsns.fastsns.application.controller;
 import dahye.fastsns.fastsns.post.dto.DailyPostCount;
 import dahye.fastsns.fastsns.post.dto.DailyPostCountRequest;
 import dahye.fastsns.fastsns.post.dto.PostCommand;
+import dahye.fastsns.fastsns.post.entity.Post;
 import dahye.fastsns.fastsns.post.service.PostReadService;
 import dahye.fastsns.fastsns.post.service.PostWriteService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,5 +28,12 @@ public class PostController {
     @GetMapping("/daily-post-counts")
     public List<DailyPostCount> getDailyPostCounts(DailyPostCountRequest request) {
         return postReadService.getDailyPostCount(request);
+    }
+
+    @GetMapping("/members/{memberId}")
+    public Page<Post> getPosts(@PathVariable Long memberId,
+                               @RequestParam Integer page,
+                               @RequestParam Integer size) {
+        return postReadService.getPosts(memberId, PageRequest.of(page, size));
     }
 }

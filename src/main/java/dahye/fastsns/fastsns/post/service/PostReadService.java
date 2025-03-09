@@ -2,8 +2,11 @@ package dahye.fastsns.fastsns.post.service;
 
 import dahye.fastsns.fastsns.post.dto.DailyPostCount;
 import dahye.fastsns.fastsns.post.dto.DailyPostCountRequest;
+import dahye.fastsns.fastsns.post.entity.Post;
 import dahye.fastsns.fastsns.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,5 +27,9 @@ public class PostReadService {
          */
 
         return postRepository.groupByCreatedDate(dailyPostCountRequest);
+    }
+
+    public Page<Post> getPosts(Long memberId, PageRequest pageRequest) {
+        return postRepository.findAllByMemberId(memberId, pageRequest);
     }
 }
