@@ -1,10 +1,10 @@
 package dahye.fastsns.fastsns.application.controller;
 
-import dahye.fastsns.fastsns.member.dto.MemberDto;
-import dahye.fastsns.fastsns.member.dto.MemberNicknameHistoryDto;
-import dahye.fastsns.fastsns.member.dto.RegisterMemberCommand;
-import dahye.fastsns.fastsns.member.service.MemberReadService;
-import dahye.fastsns.fastsns.member.service.MemberWriteService;
+import dahye.fastsns.fastsns.domain.member.dto.MemberDto;
+import dahye.fastsns.fastsns.domain.member.dto.MemberNicknameHistoryDto;
+import dahye.fastsns.fastsns.domain.member.dto.RegisterMemberCommand;
+import dahye.fastsns.fastsns.domain.member.service.MemberReadService;
+import dahye.fastsns.fastsns.domain.member.service.MemberWriteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

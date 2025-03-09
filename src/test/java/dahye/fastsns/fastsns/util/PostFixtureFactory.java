@@ -1,6 +1,6 @@
 package dahye.fastsns.fastsns.util;
 
-import dahye.fastsns.fastsns.post.entity.Post;
+import dahye.fastsns.fastsns.domain.post.entity.Post;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
 

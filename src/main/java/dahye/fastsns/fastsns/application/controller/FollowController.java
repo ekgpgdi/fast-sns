@@ -2,7 +2,7 @@ package dahye.fastsns.fastsns.application.controller;
 
 import dahye.fastsns.fastsns.application.usecase.CreateFollowMemberUsecase;
 import dahye.fastsns.fastsns.application.usecase.GetFollowingMembersUsecase;
-import dahye.fastsns.fastsns.member.dto.MemberDto;
+import dahye.fastsns.fastsns.domain.member.dto.MemberDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

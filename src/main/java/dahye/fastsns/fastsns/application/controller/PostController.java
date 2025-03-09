@@ -1,11 +1,11 @@
 package dahye.fastsns.fastsns.application.controller;
 
-import dahye.fastsns.fastsns.post.dto.DailyPostCount;
-import dahye.fastsns.fastsns.post.dto.DailyPostCountRequest;
-import dahye.fastsns.fastsns.post.dto.PostCommand;
-import dahye.fastsns.fastsns.post.entity.Post;
-import dahye.fastsns.fastsns.post.service.PostReadService;
-import dahye.fastsns.fastsns.post.service.PostWriteService;
+import dahye.fastsns.fastsns.domain.post.dto.DailyPostCount;
+import dahye.fastsns.fastsns.domain.post.dto.DailyPostCountRequest;
+import dahye.fastsns.fastsns.domain.post.dto.PostCommand;
+import dahye.fastsns.fastsns.domain.post.entity.Post;
+import dahye.fastsns.fastsns.domain.post.service.PostReadService;
+import dahye.fastsns.fastsns.domain.post.service.PostWriteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

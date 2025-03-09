@@ -1,6 +1,6 @@
 package dahye.fastsns.fastsns.util;
 
-import dahye.fastsns.fastsns.member.entity.Member;
+import dahye.fastsns.fastsns.domain.member.entity.Member;
 import org.jeasy.random.*;
 
 public class MemberFixtureFactory {

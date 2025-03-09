@@ -1,9 +1,9 @@
 package dahye.fastsns.fastsns.application.usecase;
 
-import dahye.fastsns.fastsns.follow.dto.FollowDto;
-import dahye.fastsns.fastsns.follow.service.FollowReadService;
-import dahye.fastsns.fastsns.member.dto.MemberDto;
-import dahye.fastsns.fastsns.member.service.MemberReadService;
+import dahye.fastsns.fastsns.domain.follow.dto.FollowDto;
+import dahye.fastsns.fastsns.domain.follow.service.FollowReadService;
+import dahye.fastsns.fastsns.domain.member.dto.MemberDto;
+import dahye.fastsns.fastsns.domain.member.service.MemberReadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

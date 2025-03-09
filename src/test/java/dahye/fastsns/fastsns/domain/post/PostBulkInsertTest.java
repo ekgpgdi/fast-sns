@@ -1,7 +1,7 @@
 package dahye.fastsns.fastsns.domain.post;
 
-import dahye.fastsns.fastsns.post.entity.Post;
-import dahye.fastsns.fastsns.post.repository.PostRepository;
+import dahye.fastsns.fastsns.domain.post.entity.Post;
+import dahye.fastsns.fastsns.domain.post.repository.PostRepository;
 import dahye.fastsns.fastsns.util.PostFixtureFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
