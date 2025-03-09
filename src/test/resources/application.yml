@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: fastsns
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/fast_sns?rewriteBatchedStatements=true&profileSQL=true&logger=Slf4JLogger&maxQuerySizeToLog=999999&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: root
+    password: localpw
+
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        jdbc:
+#          core: TRACE
