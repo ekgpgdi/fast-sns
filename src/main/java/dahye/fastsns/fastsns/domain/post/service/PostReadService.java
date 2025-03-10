@@ -42,7 +42,7 @@ public class PostReadService {
         2. select * from POST where memberId = 4 and id < 2;
          */
         var posts = findAllBy(memberId, cursorRequest);
-        var nextKey = posts.stream().mapToLong(Post::getId).min().orElse(CursorRequest.NON_KEY);
+        var nextKey = getNextKey(posts);
         return new PageCursor<>(cursorRequest.next(nextKey), posts);
     }
 
@@ -53,5 +53,33 @@ public class PostReadService {
         }
 
         return postRepository.findAllByMemberIdAndOrderByIdDesc(memberId, cursorRequest.size());
+    }
+
+    public PageCursor<Post> getPosts(List<Long> memberIds, CursorRequest cursorRequest) {
+        /*
+        키가 있을 때와 없을 때에 따라서 분기
+        1. select * from POST where memberId = 4
+        2. select * from POST where memberId = 4 and id < 2;
+         */
+        var posts = findAllBy(memberIds, cursorRequest);
+        var nextKey = getNextKey(posts);
+        return new PageCursor<>(cursorRequest.next(nextKey), posts);
+    }
+
+    public List<Post> getPosts(List<Long> ids) {
+        return postRepository.findAllByInId(ids);
+    }
+
+    public List<Post> findAllBy(List<Long> memberIds, CursorRequest cursorRequest) {
+
+        if (cursorRequest.hasKey()) {
+            return postRepository.findAllByLessThanIdAndInMemberIdAndOrderByIdDesc(cursorRequest.key(), memberIds, cursorRequest.size());
+        }
+
+        return postRepository.findAllByInMemberIdAndOrderByIdDesc(memberIds, cursorRequest.size());
+    }
+
+    private static long getNextKey(List<Post> posts) {
+        return posts.stream().mapToLong(Post::getId).min().orElse(CursorRequest.NON_KEY);
     }
 }

@@ -1,5 +1,7 @@
 package dahye.fastsns.fastsns.application.controller;
 
+import dahye.fastsns.fastsns.application.usecase.CreatePostUsecase;
+import dahye.fastsns.fastsns.application.usecase.GetTimelinePostUsecase;
 import dahye.fastsns.fastsns.domain.post.dto.DailyPostCount;
 import dahye.fastsns.fastsns.domain.post.dto.DailyPostCountRequest;
 import dahye.fastsns.fastsns.domain.post.dto.PostCommand;
@@ -21,10 +23,12 @@ import java.util.List;
 public class PostController {
     final private PostWriteService postWriteService;
     final private PostReadService postReadService;
+    final private GetTimelinePostUsecase getTimelinePostUsecase;
+    final private CreatePostUsecase createPostUsecase;
 
     @PostMapping("")
     public Long create(PostCommand command) {
-        return postWriteService.create(command);
+        return createPostUsecase.execute(command);
     }
 
     @GetMapping("/daily-post-counts")
@@ -43,5 +47,17 @@ public class PostController {
     public PageCursor<Post> getPosts(@PathVariable Long memberId,
                                      CursorRequest request) {
         return postReadService.getPosts(memberId, request);
+    }
+
+//    @GetMapping("/members/{memberId}/timeline")
+//    public PageCursor<Post> getTimeline(@PathVariable Long memberId,
+//                                        CursorRequest request) {
+//        return getTimelinePostUsecase.execute(memberId, request);
+//    }
+
+    @GetMapping("/members/{memberId}/timeline")
+    public PageCursor<Post> getTimeline(@PathVariable Long memberId,
+                                        CursorRequest request) {
+        return getTimelinePostUsecase.executeByTimeline(memberId, request);
     }
 }

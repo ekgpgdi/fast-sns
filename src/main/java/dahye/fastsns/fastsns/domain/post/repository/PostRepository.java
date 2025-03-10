@@ -77,6 +77,21 @@ public class PostRepository {
         return namedParameterJdbcTemplate.queryForObject(sql, param, Long.class);
     }
 
+    public List<Post> findAllByInId(List<Long> ids) {
+        if(ids.isEmpty()) return List.of();
+
+        var sql = String.format(""" 
+                SELECT *
+                FROM %s
+                WHERE  id IN (:ids)
+                """, TABLE);
+
+        var param = new MapSqlParameterSource()
+                .addValue("ids", ids);
+
+        return namedParameterJdbcTemplate.query(sql, param, rowMapper);
+    }
+
     public List<Post> findAllByMemberIdAndOrderByIdDesc(Long memberId, int size) {
         var sql = String.format(""" 
                 SELECT *
@@ -102,6 +117,41 @@ public class PostRepository {
                 """, TABLE);
 
         var param = new MapSqlParameterSource().addValue("memberId", memberId)
+                .addValue("size", size)
+                .addValue("id", id);
+
+        return namedParameterJdbcTemplate.query(sql, param, rowMapper);
+    }
+
+    public List<Post> findAllByInMemberIdAndOrderByIdDesc(List<Long> memberIds, int size) {
+        if(memberIds.isEmpty()) return List.of();
+
+        var sql = String.format(""" 
+                SELECT *
+                FROM %s
+                WHERE memberId IN (:memberIds)
+                ORDER BY id DESC
+                LIMIT :size
+                """, TABLE);
+
+        var param = new MapSqlParameterSource().addValue("memberIds", memberIds)
+                .addValue("size", size);
+
+        return namedParameterJdbcTemplate.query(sql, param, rowMapper);
+    }
+
+    public List<Post> findAllByLessThanIdAndInMemberIdAndOrderByIdDesc(Long id, List<Long> memberIds, int size) {
+        if(memberIds.isEmpty()) return List.of();
+
+        var sql = String.format(""" 
+                SELECT *
+                FROM %s
+                WHERE memberId IN (:memberIds) AND id < :id
+                ORDER BY id DESC
+                LIMIT :size
+                """, TABLE);
+
+        var param = new MapSqlParameterSource().addValue("memberIds", memberIds)
                 .addValue("size", size)
                 .addValue("id", id);
 
