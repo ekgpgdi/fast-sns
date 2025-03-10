@@ -1,4 +1,4 @@
-package dahye.fastsns.fastsns.domain;
+package dahye.fastsns.fastsns.util;
 
 import org.springframework.data.domain.Sort;
 

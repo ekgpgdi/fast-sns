@@ -6,6 +6,8 @@ import dahye.fastsns.fastsns.domain.post.dto.PostCommand;
 import dahye.fastsns.fastsns.domain.post.entity.Post;
 import dahye.fastsns.fastsns.domain.post.service.PostReadService;
 import dahye.fastsns.fastsns.domain.post.service.PostWriteService;
+import dahye.fastsns.fastsns.util.CursorRequest;
+import dahye.fastsns.fastsns.util.PageCursor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,5 +37,11 @@ public class PostController {
                                @RequestParam Integer page,
                                @RequestParam Integer size) {
         return postReadService.getPosts(memberId, PageRequest.of(page, size));
+    }
+
+    @GetMapping("/members/{memberId}/by-cursor")
+    public PageCursor<Post> getPosts(@PathVariable Long memberId,
+                                     CursorRequest request) {
+        return postReadService.getPosts(memberId, request);
     }
 }
