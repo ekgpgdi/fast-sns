@@ -1,8 +1,8 @@
 ## 목차
-- [개발 고려 사항](development_considerations.md)
-- [데이터베이스 설계](database_design.md)
+- [개발 고려 사항](developmentConsiderations.md)
+- [데이터베이스 설계](databaseDesign.md)
 - [페이지네이션](pagination.md)
-- [타임라인 아키텍처](timeline_architecture.md)
+- [타임라인 아키텍처](timelineArchitecture.md)
 - [대용량 시스템 설계](scalability.md)
 
 <br/>
