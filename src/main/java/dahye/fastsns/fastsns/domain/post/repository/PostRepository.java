@@ -35,6 +35,7 @@ public class PostRepository {
             .contents(resultSet.getString("contents"))
             .createdDate(resultSet.getObject("createdDate", LocalDate.class))
             .likeCount(resultSet.getLong("likeCount"))
+            .version(resultSet.getLong("version"))
             .createdAt(resultSet.getObject("createdAt", LocalDateTime.class))
             .build();
 
@@ -76,7 +77,7 @@ public class PostRepository {
     public Optional<Post> findById(Long postId, Boolean requiredLock) {
         var sql = String.format("SELECT * FROM %s WHERE id = :id", TABLE);
 
-        if(requiredLock) {
+        if (requiredLock) {
             sql += " FOR UPDATE ";
         }
         var param = new MapSqlParameterSource().addValue("id", postId);
@@ -217,12 +218,18 @@ public class PostRepository {
                 contents = :contents,
                 createdDate = :createdDate,
                 likeCount = :likeCount,
-                createdAt = :createdAt
-                WHERE id = :id
+                createdAt = :createdAt,
+                version = :version + 1
+                WHERE id = :id AND version = :version
                 """, TABLE);
 
         SqlParameterSource params = new BeanPropertySqlParameterSource(post);
-        namedParameterJdbcTemplate.update(sql, params);
+        var updatedCount = namedParameterJdbcTemplate.update(sql, params);
+
+        if (updatedCount == 0) {
+            throw new RuntimeException("갱신 실패");
+        }
+
         return post;
     }
 }
