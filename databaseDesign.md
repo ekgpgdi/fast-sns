@@ -181,3 +181,65 @@ SELECT createdDate, memberId, count(id) as count
 - **MySQL (InnoDB)**
 - **PostgreSQL**
 - **Oracle (부분 지원)**
+
+
+<br/>
+
+### 트랜잭션 격리 레벨과 이상 현상
+
+1. **Dirty Read**: 커밋되지 않은 데이터를 읽음
+  - 트랜잭션 A가 데이터를 수정하고 커밋하지 않은 상태에서, 트랜잭션 B가 그 데이터를 읽는 현상. 이 경우 트랜잭션 A가 롤백되면, 트랜잭션 B는 잘못된 데이터를 읽은 셈이 됩니다
+
+2. **Non Repeatable Read**: 하나의 트랜잭션에서 같은 데이터를 읽을 때 다른 결과를 얻음
+  - 트랜잭션 A가 데이터를 읽은 후, 트랜잭션 B가 그 데이터를 수정하거나 삭제한 뒤, 트랜잭션 A가 다시 데이터를 읽을 때 이전과 다른 결과를 얻는 현상
+
+3. **Phantom Read**: 같은 조건으로 데이터를 읽었을 때 데이터 셋 결과가 달라지는 현상
+  - 트랜잭션 A가 특정 조건으로 데이터를 읽은 후, 트랜잭션 B가 그 조건에 맞는 데이터를 삽입, 삭제, 업데이트한 후, 트랜잭션 A가 다시 데이터를 읽을 때 결과 셋이 달라지는 현상
+
+#### 1. Read Uncommitted
+- **Dirty Read**: 허용
+- **Non Repeatable Read**: 허용
+- **Phantom Read**: 허용
+
+Read Uncommitted는 가장 낮은 격리 수준으로, 다른 트랜잭션에서 커밋되지 않은 데이터를 읽을 수 있습니다. 이로 인해 여러 가지 이상 현상이 발생할 수 있습니다.
+
+#### 2. Read Committed
+- **Dirty Read**: 허용 안됨
+- **Non Repeatable Read**: 허용
+- **Phantom Read**: 허용
+
+Read Committed는 커밋된 데이터만 읽을 수 있기 때문에, Dirty Read는 발생하지 않지만 Non Repeatable Read와 Phantom Read는 여전히 발생할 수 있습니다.
+
+#### 3. Repeable Read
+- **Dirty Read**: 허용 안됨
+- **Non Repeatable Read**: 허용 안됨
+- **Phantom Read**: 허용
+
+Repeable Read는 트랜잭션이 실행되는 동안 동일한 데이터를 여러 번 읽더라도 항상 동일한 값을 반환합니다. 트랜잭션 간에 데이터 변경을 방지하여 Non Repeatable Read를 방지하지만, 여전히 Phantom Read 현상이 발생할 수 있습니다. 트랜잭션 ID를 부여하여 다른 트랜잭션이 해당 트랜잭션보다 낮게 들어오는 트랜잭션을 볼 수 없게 만듭니다.
+
+#### 4. Serializable
+- **Dirty Read**: 허용 안됨
+- **Non Repeatable Read**: 허용 안됨
+- **Phantom Read**: 허용 안됨
+
+Serializable은 가장 높은 격리 수준으로, 트랜잭션이 다른 트랜잭션의 영향을 전혀 받지 않도록 보장합니다. 이 격리 수준에서는 모든 이상 현상이 발생하지 않습니다. 하지만, 동시 처리량이 낮고 성능에 영향을 미칠 수 있습니다.
+
+### 격리 수준에 따른 이상 현상 발생 여부
+
+| 격리 레벨           | Dirty Read | Non Repeatable Read | Phantom Read |
+|---------------------|------------|----------------------|--------------|
+| Read Uncommitted    | O          | O                    | O            |
+| Read Committed      | X          | O                    | O            |
+| Repeable Read       | X          | X                    | O            |
+| Serializable        | X          | X                    | X            |
+
+### 동시 처리량과 격리 레벨
+
+- **Read Uncommitted**는 동시 처리량이 가장 높지만, 많은 이상 현상을 허용합니다.
+- **Read Committed**나 **Repeable Read**는 이상 현상이 적고 안정적이지만, 동시 처리량이 낮습니다.
+- **Repeable Read**는 데드락 이슈가 발생할 수 있어 **Read Committed**가 더 많이 사용됩니다.
+- **Serializable**는 가장 높은 격리 수준이지만, 성능에 큰 영향을 미치므로 사용이 드뭅니다.
+
+
+**Read Committed**와 **Repeable Read**는 균형을 잘 맞춘 격리 레벨로, 대부분의 상황에서 자주 사용됩니다. <br/>
+하지만 **Repeable Read**는 데드락을 유발할 수 있으므로 **Read Committed**가 더 많이 사용됩니다. <br/>
