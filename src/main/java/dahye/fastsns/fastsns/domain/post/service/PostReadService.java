@@ -2,7 +2,9 @@ package dahye.fastsns.fastsns.domain.post.service;
 
 import dahye.fastsns.fastsns.domain.post.dto.DailyPostCount;
 import dahye.fastsns.fastsns.domain.post.dto.DailyPostCountRequest;
+import dahye.fastsns.fastsns.domain.post.dto.PostDto;
 import dahye.fastsns.fastsns.domain.post.entity.Post;
+import dahye.fastsns.fastsns.domain.post.repository.PostLikeRepository;
 import dahye.fastsns.fastsns.domain.post.repository.PostRepository;
 import dahye.fastsns.fastsns.util.CursorRequest;
 import dahye.fastsns.fastsns.util.PageCursor;
@@ -17,6 +19,7 @@ import java.util.List;
 @Service
 public class PostReadService {
     final private PostRepository postRepository;
+    final private PostLikeRepository postLikeRepository;
 
     public List<DailyPostCount> getDailyPostCount(DailyPostCountRequest dailyPostCountRequest) {
         /*
@@ -31,19 +34,33 @@ public class PostReadService {
         return postRepository.groupByCreatedDate(dailyPostCountRequest);
     }
 
-    public Page<Post> getPosts(Long memberId, PageRequest pageRequest) {
-        return postRepository.findAllByMemberId(memberId, pageRequest);
+    public PostDto toDto(Post post) {
+        return new PostDto(
+                post.getId(),
+                post.getContents(),
+                post.getCreatedAt(),
+                postLikeRepository.getCount(post.getId())
+        );
     }
 
-    public PageCursor<Post> getPosts(Long memberId, CursorRequest cursorRequest) {
+    public Page<PostDto> getPosts(Long memberId, PageRequest pageRequest) {
+        return postRepository.findAllByMemberId(memberId, pageRequest).map(this::toDto);
+    }
+
+    public PageCursor<PostDto> getPosts(Long memberId, CursorRequest cursorRequest) {
         /*
         키가 있을 때와 없을 때에 따라서 분기
         1. select * from POST where memberId = 4
         2. select * from POST where memberId = 4 and id < 2;
          */
-        var posts = findAllBy(memberId, cursorRequest);
+        var posts = findAllBy(memberId, cursorRequest)
+                .stream().map(this::toDto).toList();
         var nextKey = getNextKey(posts);
         return new PageCursor<>(cursorRequest.next(nextKey), posts);
+    }
+
+    public Post getPost(Long postId) {
+        return postRepository.findById(postId, false).orElseThrow();
     }
 
     public List<Post> findAllBy(Long memberId, CursorRequest cursorRequest) {
@@ -55,13 +72,14 @@ public class PostReadService {
         return postRepository.findAllByMemberIdAndOrderByIdDesc(memberId, cursorRequest.size());
     }
 
-    public PageCursor<Post> getPosts(List<Long> memberIds, CursorRequest cursorRequest) {
+    public PageCursor<PostDto> getPosts(List<Long> memberIds, CursorRequest cursorRequest) {
         /*
         키가 있을 때와 없을 때에 따라서 분기
         1. select * from POST where memberId = 4
         2. select * from POST where memberId = 4 and id < 2;
          */
-        var posts = findAllBy(memberIds, cursorRequest);
+        var posts = findAllBy(memberIds, cursorRequest)
+                .stream().map(this::toDto).toList();
         var nextKey = getNextKey(posts);
         return new PageCursor<>(cursorRequest.next(nextKey), posts);
     }
@@ -79,7 +97,7 @@ public class PostReadService {
         return postRepository.findAllByInMemberIdAndOrderByIdDesc(memberIds, cursorRequest.size());
     }
 
-    private static long getNextKey(List<Post> posts) {
-        return posts.stream().mapToLong(Post::getId).min().orElse(CursorRequest.NON_KEY);
+    private static long getNextKey(List<PostDto> posts) {
+        return posts.stream().mapToLong(PostDto::id).min().orElse(CursorRequest.NON_KEY);
     }
 }
