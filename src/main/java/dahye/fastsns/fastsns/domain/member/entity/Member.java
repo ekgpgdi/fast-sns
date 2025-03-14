@@ -1,5 +1,6 @@
 package dahye.fastsns.fastsns.domain.member.entity;
 
+import dahye.fastsns.fastsns.domain.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -7,7 +8,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 /*
@@ -22,7 +22,7 @@ import java.util.Objects;
 @Getter
 @NoArgsConstructor
 @Table(name = "member")
-public class Member {
+public class Member extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,20 +36,16 @@ public class Member {
     @Column
     private LocalDate birthDay;
 
-    @Column
-    private LocalDateTime createdAt;
-
     final private static Long NAME_MAX_LENGTH = 10L;
 
     @Builder
-    public Member(Long id, String nickname, String email, LocalDate birthDay, LocalDateTime createdAt) {
+    public Member(Long id, String nickname, String email, LocalDate birthDay) {
         this.id = id;
         this.email = Objects.requireNonNull(email);
         this.birthDay = Objects.requireNonNull(birthDay);
 
         validateNickname(nickname);
         this.nickname = Objects.requireNonNull(nickname);
-        this.createdAt = createdAt == null ? LocalDateTime.now() : createdAt;
     }
 
     /*
