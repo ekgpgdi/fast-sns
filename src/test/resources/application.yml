@@ -7,9 +7,10 @@ spring:
     username: root
     password: localpw
 
-#logging:
-#  level:
-#    org:
-#      springframework:
-#        jdbc:
-#          core: TRACE
+  jpa:
+    show-sql: true
+
+  data:
+    redis:
+      host: localhost
+      port: 6379

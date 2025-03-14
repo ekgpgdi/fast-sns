@@ -10,6 +10,16 @@ import static org.jeasy.random.FieldPredicates.*;
 
 public class PostFixtureFactory {
 
+    static public Post create(Long id) {
+        var idField = named("id").and(ofType(Long.class)
+                .and(inClass(Post.class))); // id 는 랜덤값 생성에서 제외
+
+        var params = new EasyRandomParameters()
+                .randomize(idField, () -> id);
+        return new EasyRandom(params).nextObject(Post.class);
+    }
+
+
     static public EasyRandom get(Long memberId, LocalDate firstDate, LocalDate lastDate) {
         var idField = named("id").and(ofType(Long.class)
                 .and(inClass(Post.class))); // id 는 랜덤값 생성에서 제외
