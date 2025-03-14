@@ -43,7 +43,8 @@ public class Post extends BaseTimeEntity {
         this.version = version == null ? 0 : version;
     }
 
-    public void incrementLikeCount() {
-        this.likeCount += 1;
+    public void updateLikeCount(long updateLikeCount) {
+        this.likeCount = (this.likeCount == null) ? updateLikeCount : this.likeCount + updateLikeCount;
     }
+
 }

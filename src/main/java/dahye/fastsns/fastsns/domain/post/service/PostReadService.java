@@ -39,7 +39,7 @@ public class PostReadService {
                 post.getId(),
                 post.getContents(),
                 post.getCreatedAt(),
-                postLikeRepository.countByPostId(post.getId())
+                post.getLikeCount()
         );
     }
 

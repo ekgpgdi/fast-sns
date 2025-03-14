@@ -2,6 +2,7 @@ package dahye.fastsns.fastsns.application.controller;
 
 import dahye.fastsns.fastsns.application.usecase.CreatePostLikeUsecase;
 import dahye.fastsns.fastsns.application.usecase.CreatePostUsecase;
+import dahye.fastsns.fastsns.application.usecase.DeletePostLikeUsecase;
 import dahye.fastsns.fastsns.application.usecase.GetTimelinePostUsecase;
 import dahye.fastsns.fastsns.domain.post.dto.DailyPostCount;
 import dahye.fastsns.fastsns.domain.post.dto.DailyPostCountRequest;
@@ -23,11 +24,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/posts")
 public class PostController {
-    final private PostWriteService postWriteService;
     final private PostReadService postReadService;
     final private GetTimelinePostUsecase getTimelinePostUsecase;
     final private CreatePostUsecase createPostUsecase;
     final private CreatePostLikeUsecase createPostLikeUsecase;
+    final private DeletePostLikeUsecase deletePostLikeUsecase;
 
     @PostMapping("")
     public Long create(PostCommand command) {
@@ -41,8 +42,8 @@ public class PostController {
 
     @GetMapping("/members/{memberId}")
     public Page<PostDto> getPosts(@PathVariable Long memberId,
-                               @RequestParam Integer page,
-                               @RequestParam Integer size) {
+                                  @RequestParam Integer page,
+                                  @RequestParam Integer size) {
         return postReadService.getPosts(memberId, PageRequest.of(page, size));
     }
 
@@ -64,16 +65,21 @@ public class PostController {
         return getTimelinePostUsecase.executeByTimeline(memberId, request);
     }
 
-    @PostMapping("/{postId}/like/v1")
-    public void likePost(@PathVariable Long postId) {
+//    @PostMapping("/{postId}/like/v1")
+//    public void likePost(@PathVariable Long postId) {
 //        postWriteService.likePost(postId);
-        postWriteService.likePostByOptimisticLock(postId);
+//        postWriteService.likePostByOptimisticLock(postId);
+//    }
+
+    @PostMapping("/{postId}/like")
+    public void likePost(@PathVariable Long postId,
+                         @RequestParam Long memberId) {
+        createPostLikeUsecase.execute(postId, memberId);
     }
 
-    @PostMapping("/{postId}/like/v2")
-    public void likePostV2(@PathVariable Long postId,
+    @DeleteMapping("/{postId}/like")
+    public void deletePost(@PathVariable Long postId,
                            @RequestParam Long memberId) {
-//        postWriteService.likePost(postId);
-        createPostLikeUsecase.execute(postId, memberId);
+        deletePostLikeUsecase.execute(postId, memberId);
     }
 }
