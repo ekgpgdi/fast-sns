@@ -1,18 +1,18 @@
 package dahye.fastsns.fastsns.domain.post.entity;
 
+import dahye.fastsns.fastsns.domain.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
 @Getter
 @NoArgsConstructor
 @Table(name = "post_like")
-public class PostLike {
+public class PostLike extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,14 +23,11 @@ public class PostLike {
     @Column
     private Long postId;
 
-    @Column
-    private LocalDateTime createdAt;
 
     @Builder
-    public PostLike(Long id, Long memberId, Long postId, LocalDateTime createdAt) {
+    public PostLike(Long id, Long memberId, Long postId) {
         this.id = id;
         this.memberId = Objects.requireNonNull(memberId);
         this.postId = Objects.requireNonNull(postId);
-        this.createdAt = createdAt == null ? LocalDateTime.now() : createdAt;
     }
 }
