@@ -1,7 +1,7 @@
 package dahye.fastsns.fastsns.domain.post;
 
 import dahye.fastsns.fastsns.domain.post.entity.Post;
-import dahye.fastsns.fastsns.domain.post.repository.PostRepository;
+import dahye.fastsns.fastsns.domain.post.repository.PostJdbcRepository;
 import dahye.fastsns.fastsns.util.PostFixtureFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import java.util.stream.IntStream;
 @SpringBootTest
 public class PostBulkInsertTest {
     @Autowired
-    private PostRepository postRepository;
+    private PostJdbcRepository postJdbcRepository;
 
     @Test
     public void bulkInsert() {
@@ -39,7 +39,7 @@ public class PostBulkInsertTest {
         var queryStopWatch = new StopWatch();
         queryStopWatch.start();
 
-        postRepository.bulkInsert(posts);
+        postJdbcRepository.bulkInsert(posts);
 
         queryStopWatch.stop();
         System.out.println("DB INSERT 시간 : " + queryStopWatch.getTotalTimeSeconds());

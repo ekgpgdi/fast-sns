@@ -39,7 +39,7 @@ public class PostReadService {
                 post.getId(),
                 post.getContents(),
                 post.getCreatedAt(),
-                postLikeRepository.getCount(post.getId())
+                postLikeRepository.countByPostId(post.getId())
         );
     }
 
@@ -66,10 +66,10 @@ public class PostReadService {
     public List<Post> findAllBy(Long memberId, CursorRequest cursorRequest) {
 
         if (cursorRequest.hasKey()) {
-            return postRepository.findAllByLessThanIdAndMemberIdAndOrderByIdDesc(cursorRequest.key(), memberId, cursorRequest.size());
+            return postRepository.findAllByIdLessThanAndMemberIdOrderByIdDesc(cursorRequest.key(), memberId, cursorRequest.size());
         }
 
-        return postRepository.findAllByMemberIdAndOrderByIdDesc(memberId, cursorRequest.size());
+        return postRepository.findAllByMemberIdOrderByIdDesc(memberId, cursorRequest.size());
     }
 
     public PageCursor<PostDto> getPosts(List<Long> memberIds, CursorRequest cursorRequest) {
@@ -85,16 +85,16 @@ public class PostReadService {
     }
 
     public List<Post> getPosts(List<Long> ids) {
-        return postRepository.findAllByInId(ids);
+        return postRepository.findAllByIdIn(ids);
     }
 
     public List<Post> findAllBy(List<Long> memberIds, CursorRequest cursorRequest) {
 
         if (cursorRequest.hasKey()) {
-            return postRepository.findAllByLessThanIdAndInMemberIdAndOrderByIdDesc(cursorRequest.key(), memberIds, cursorRequest.size());
+            return postRepository.findAllByIdLessThanAndMemberIdInOrderByIdDesc(cursorRequest.key(), memberIds, cursorRequest.size());
         }
 
-        return postRepository.findAllByInMemberIdAndOrderByIdDesc(memberIds, cursorRequest.size());
+        return postRepository.findAllByMemberIdInOrderByIdDesc(memberIds, cursorRequest.size());
     }
 
     private static long getNextKey(List<PostDto> posts) {

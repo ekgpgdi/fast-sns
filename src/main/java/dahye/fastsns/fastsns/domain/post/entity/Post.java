@@ -1,27 +1,40 @@
 package dahye.fastsns.fastsns.domain.post.entity;
 
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Entity
 @Getter
+@NoArgsConstructor
+@Table(name = "post")
 public class Post {
-    final private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    final private Long memberId;
+    @Column
+    private Long memberId;
 
-    final private String contents;
+    @Column
+    private String contents;
 
-    final private LocalDate createdDate;
+    @Column
+    private LocalDate createdDate;
 
+    @Column
     private Long likeCount;
 
+    @Column
     private Long version;
 
-    final private LocalDateTime createdAt;
+    @Column
+    private LocalDateTime createdAt;
 
     @Builder
     public Post(Long id, Long memberId, String contents, LocalDate createdDate, Long likeCount, Long version, LocalDateTime createdAt) {

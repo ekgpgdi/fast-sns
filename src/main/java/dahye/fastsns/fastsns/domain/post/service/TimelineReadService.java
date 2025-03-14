@@ -23,7 +23,7 @@ public class TimelineReadService {
 
     private List<Timeline> findAllBy(Long memberId, CursorRequest cursorRequest) {
         if (cursorRequest.hasKey()) {
-            return timelineRepository.findAllByLessThanIdAndMemberIdOrderIdByIdDesc(cursorRequest.key(), memberId, cursorRequest.size());
+            return timelineRepository.findAllByIdLessThanAndMemberIdOrderIdByIdDesc(cursorRequest.key(), memberId, cursorRequest.size());
         }
 
         return timelineRepository.findAllByMemberIdOrderIdByIdDesc(memberId, cursorRequest.size());

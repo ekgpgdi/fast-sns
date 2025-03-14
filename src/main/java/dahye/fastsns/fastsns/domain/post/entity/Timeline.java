@@ -1,20 +1,30 @@
 package dahye.fastsns.fastsns.domain.post.entity;
 
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Entity
 @Getter
+@NoArgsConstructor
+@Table(name = "timeline")
 public class Timeline {
-    final private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    final private Long memberId;
+    @Column
+    private Long memberId;
 
-    final private Long postId;
+    @Column
+    private Long postId;
 
-    final private LocalDateTime createdAt;
+    @Column
+    private LocalDateTime createdAt;
 
     @Builder
     public Timeline(Long id, Long memberId, Long postId, LocalDateTime createdAt) {

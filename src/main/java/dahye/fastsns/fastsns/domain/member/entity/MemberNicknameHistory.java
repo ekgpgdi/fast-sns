@@ -1,20 +1,30 @@
 package dahye.fastsns.fastsns.domain.member.entity;
 
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Entity
 @Getter
+@NoArgsConstructor
+@Table(name = "member_nickname_history")
 public class MemberNicknameHistory {
-    final private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    final private Long memberId;
+    @Column
+    private Long memberId;
 
-    final private String nickname;
+    @Column
+    private String nickname;
 
-    final private LocalDateTime createdAt;
+    @Column
+    private LocalDateTime createdAt;
 
     @Builder
     public MemberNicknameHistory(Long id, Long memberId, String nickname, LocalDateTime createdAt) {

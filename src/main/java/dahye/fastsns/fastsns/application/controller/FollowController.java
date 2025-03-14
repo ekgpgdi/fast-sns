@@ -3,6 +3,7 @@ package dahye.fastsns.fastsns.application.controller;
 import dahye.fastsns.fastsns.application.usecase.CreateFollowMemberUsecase;
 import dahye.fastsns.fastsns.application.usecase.GetFollowingMembersUsecase;
 import dahye.fastsns.fastsns.domain.member.dto.MemberDto;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,8 +17,8 @@ public class FollowController {
     final private GetFollowingMembersUsecase getFollowingMembersUsecase;
 
     @PostMapping("/{fromId}/{toId}")
-    public void register(@PathVariable Long fromId,
-                         @PathVariable Long toId) {
+    public void register(@Parameter(name = "fromId") @PathVariable Long fromId,
+                         @Parameter(name = "toId") @PathVariable Long toId) {
         createFollowMemberUsecase.execute(fromId, toId);
     }
 

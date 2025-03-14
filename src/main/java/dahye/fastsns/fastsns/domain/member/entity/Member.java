@@ -1,7 +1,9 @@
 package dahye.fastsns.fastsns.domain.member.entity;
 
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
@@ -16,17 +18,26 @@ import java.util.Objects;
     객체 상태 변경은 Setter보다는 동작 단위로 메서드를 제공하는 것이 더 안전하고 명확함.
     예: setBalance() 대신 deposit(), withdraw() 메서드를 사용하여 상태 변경을 관리하도록 함.
 */
+@Entity
 @Getter
+@NoArgsConstructor
+@Table(name = "member")
 public class Member {
-    final private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @Column
     private String nickname;
 
-    final private String email;
+    @Column
+    private String email;
 
-    final private LocalDate birthDay;
+    @Column
+    private LocalDate birthDay;
 
-    final private LocalDateTime createdAt;
+    @Column
+    private LocalDateTime createdAt;
 
     final private static Long NAME_MAX_LENGTH = 10L;
 
